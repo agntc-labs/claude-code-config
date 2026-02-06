@@ -1,0 +1,24 @@
+# Sensitive files
+api-vault*.json
+settings.local.json
+*.key
+*.pem
+*credentials*
+*secret*
+
+# Large files and caches
+projects/
+file-history/
+debug/
+cache/
+tasks/
+*.jsonl
+history.jsonl
+
+# Local only
+*.local.md
+CLAUDE.local.md
+
+# System
+.DS_Store
+*.lock
