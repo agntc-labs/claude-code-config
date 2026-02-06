@@ -1,0 +1,28 @@
+name: Sync Claude Config to Devices
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  notify-devices:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Notify Mac Studio to pull
+        run: |
+          # Send webhook/message to trigger pull on Mac Studio
+          # This calls Ava's coordinator to notify about the update
+          curl -X POST "${{ secrets.MAC_STUDIO_WEBHOOK }}" \
+            -H "Content-Type: application/json" \
+            -d '{"type": "config_update", "repo": "claude-code-config", "action": "pull"}' \
+            || echo "Mac Studio notification sent (or offline)"
+
+      - name: Log sync
+        run: |
+          echo "Config synced at $(date)"
+          echo "Files changed:"
+          git diff --name-only HEAD~1 || echo "Initial commit"
